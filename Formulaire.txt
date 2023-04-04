@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Form Validation</title>
+	<style>
+		input[type="text"], input[type="email"], input[type="number"] {
+			padding: 10px;
+			margin: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			font-size: 16px;
+		}
+
+		.error {
+			color: red;
+			font-size: 14px;
+			margin: 5px 0;
+		}
+	</style>
+</head>
+<body>
+	<h1>Form Validation</h1>
+	<form id="myForm">
+		<label for="name">Name:</label>
+		<input type="text" id="name" name="name">
+
+		<label for="email">Email:</label>
+		<input type="email" id="email" name="email">
+
+		<label for="number">Number:</label>
+		<input type="number" id="number" name="number">
+
+		<input type="submit" value="Submit">
+	</form>
+
+	<script>
+		const form = document.getElementById('myForm');
+		const nameField = document.getElementById('name');
+		const emailField = document.getElementById('email');
+		const numberField = document.getElementById('number');
+
+		form.onsubmit = function(event) {
+			event.preventDefault();
+
+			// Reset previous errors
+			const errors = document.getElementsByClassName('error');
+			while (errors.length > 0) {
+				errors[0].parentNode.removeChild(errors[0]);
+			}
+
+			// Check if form is empty
+			if (nameField.value === '' || emailField.value === '' || numberField.value === '') {
+				alert('Please fill all the fields');
+				return;
+			}
+
+			// Validate name field
+			if (!isValidName(nameField.value)) {
+				const error = document.createElement('div');
+				error.className = 'error';
+				error.textContent = 'Please enter a valid name';
+				nameField.parentNode.insertBefore(error, nameField.nextSibling);
+			}
+
+			// Validate email field
+			if (!isValidEmail(emailField.value)) {
+				const error = document.createElement('div');
+				error.className = 'error';
+				error.textContent = 'Please enter a valid email address';
+				emailField.parentNode.insertBefore(error, emailField.nextSibling);
+			}
+
+			// Validate number field
+			if (!isValidNumber(numberField.value)) {
+				const error = document.createElement('div');
+				error.className = 'error';
+				error.textContent = 'Please enter a valid number';
+				numberField.parentNode.insertBefore(error, numberField.nextSibling);
+			}
+		};
+
+		function isValidName(name) {
+			// Check if name is empty or contains digits or special characters
+			if (name === '' || /\d/.test(name) || /[^\w\s]/.test(name)) {
+				return false;
+			}
+			return true;
+		}
+
+		function isValidEmail(email) {
+			// Check if email is empty or doesn't contain '@' or '.'
+			if (email === '' || email.indexOf('@') === -1 || email.indexOf('.') === -1) {
+				return false;
+			}
+			return true;
+		}
+
+		function isValidNumber(number) {
+			// Check if number is empty or contains non-numeric characters
+			if (number === '' || /[^0-9]/.test(number)) {
+				return false;
+			}
+			return true;
+		}
+	</script>
+</body>
+</html>
